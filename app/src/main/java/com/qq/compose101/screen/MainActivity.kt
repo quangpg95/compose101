@@ -1,4 +1,4 @@
-package com.qq.compose101
+package com.qq.compose101.screen
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -45,11 +45,6 @@ private fun ComposeApp101(
         color = MaterialTheme.colorScheme.primary,
         modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
     ) {
-//        Column(modifier = modifier.padding(vertical = 4.dp)) {
-//            for (name in names) {
-//                Greeting(name = name)
-//            }
-//        }
         Greetings()
     }
 }
