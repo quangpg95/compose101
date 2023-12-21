@@ -12,7 +12,6 @@ fun Compose101App() {
 @Composable
 fun Compose101NavHost(navController: NavHostController) {
     NavHost(navController = navController, startDestination = Screen.Home.route) {
-
     }
 
 }
