@@ -68,7 +68,7 @@ fun Greeting(name: String) {
         animationSpec = spring(
             dampingRatio = Spring.DampingRatioMediumBouncy,
             stiffness = Spring.StiffnessLow
-        )
+        ), label = ""
     )
     Row(Modifier.padding(24.dp)) {
         Column(
