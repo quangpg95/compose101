@@ -71,6 +71,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.androidx.profileinstaller)
+    implementation(libs.google.fonts)
 
     // Compose
     implementation(platform(libs.androidx.compose.bom))

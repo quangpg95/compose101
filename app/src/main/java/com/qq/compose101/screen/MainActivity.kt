@@ -24,6 +24,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.qq.compose101.ui.theme.Compose101Theme
+import com.qq.compose101.ui.theme.body
+import com.qq.compose101.ui.theme.caption
+import com.qq.compose101.ui.theme.label
+import com.qq.compose101.ui.theme.title
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -78,11 +82,12 @@ fun Greeting(name: String) {
         ) {
             Text(
                 text = "Hello",
+                style = MaterialTheme.typography.title
             )
-            Text(text = "$name!")
+            Text(text = "$name!", style = MaterialTheme.typography.caption)
         }
         ElevatedButton(onClick = { expanded = !expanded }) {
-            Text(if (expanded) "Show less" else "Show more")
+            Text(if (expanded) "Show less" else "Show more", style = MaterialTheme.typography.body)
         }
     }
 
