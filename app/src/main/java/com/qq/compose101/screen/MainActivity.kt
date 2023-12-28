@@ -58,7 +58,7 @@ private fun ComposeApp101(
 @Composable
 fun Greetings(modifier: Modifier = Modifier, names: List<String> = List(1000) { "$it" }) {
     LazyColumn(modifier = modifier.padding(4.dp)) {
-        items(names) { name ->
+        items(names, key = { names -> names.hashCode() }) { name ->
             Greeting(name)
         }
     }
