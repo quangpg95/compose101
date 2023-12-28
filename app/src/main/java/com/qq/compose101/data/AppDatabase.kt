@@ -4,10 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
+import com.qq.compose101.data.local.Converters
 import com.qq.compose101.data.local.GardenPlantingDao
 import com.qq.compose101.data.local.PlantDao
 import com.qq.compose101.data.model.GardenPlanting
@@ -16,6 +18,7 @@ import com.qq.compose101.worker.SeedDatabaseWorker
 import com.qq.compose101.worker.SeedDatabaseWorker.Companion.KEY_FILENAME
 
 @Database(entities = [GardenPlanting::class, Plant::class], version = 1, exportSchema = false)
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun gardenPlantingDao(): GardenPlantingDao
     abstract fun plantDao(): PlantDao
