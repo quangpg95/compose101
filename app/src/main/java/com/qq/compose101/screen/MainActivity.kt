@@ -87,7 +87,7 @@ fun Greeting(name: String) {
             Text(text = "$name!", style = MaterialTheme.typography.caption)
         }
         ElevatedButton(onClick = { expanded = !expanded }) {
-            Text(if (expanded) "Show less" else "Show more", style = MaterialTheme.typography.body)
+            Text(if (expanded) "Show less" else "Show more", style = MaterialTheme.typography.title)
         }
     }
 
