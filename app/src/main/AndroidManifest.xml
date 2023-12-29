@@ -14,7 +14,7 @@
         android:name=".MainApplication"
         tools:targetApi="31">
         <activity
-            android:name=".screen.MainActivity"
+            android:name=".feature.app.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Compose101">
             <intent-filter>
