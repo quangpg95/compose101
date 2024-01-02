@@ -3,6 +3,7 @@ package com.qq.compose101.feature.plants.data.local.table
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.qq.compose101.feature.plants.domain.entity.Plant
 import java.util.Calendar
 
 @Entity(tableName = "plants")
@@ -23,3 +24,12 @@ data class PlantDB(
 
     override fun toString() = name
 }
+
+fun PlantDB.convert() = Plant(
+    plantId = plantId,
+    name = name,
+    description = description,
+    growZoneNumber = growZoneNumber,
+    wateringInterval = wateringInterval,
+    imageUrl = imageUrl
+)

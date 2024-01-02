@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.qq.compose101.feature.plants.domain.entity.GardenPlanting
 import java.util.Calendar
 
 /**
@@ -41,4 +42,13 @@ data class GardenPlantingDB(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var gardenPlantingId: Long = 0
+}
+
+fun GardenPlantingDB.convert(): GardenPlanting {
+    return GardenPlanting(
+        plantId = plantId,
+        plantDate = plantDate,
+        lastWateringDate = lastWateringDate,
+        gardenPlantingId = gardenPlantingId
+    )
 }

@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 
-package com.qq.compose101.feature.plants.ui.screen
+package com.qq.compose101.feature.plants.ui.screen.home
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

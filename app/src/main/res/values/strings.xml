@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">Compose101</string>
+    <string name="app_name">Seed Garden</string>
+    <string name="title_my_garden">My garden</string>
+    <string name="title_seeds">Seeds</string>
 </resources>

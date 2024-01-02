@@ -1,7 +1,9 @@
-package com.qq.compose101.feature.plants.domain.di
+package com.qq.compose101.feature.plants.data.di
 
+import com.qq.compose101.feature.plants.data.repositoryimpl.GardenRepositoryImpl
 import com.qq.compose101.feature.plants.domain.repository.PlantRepository
 import com.qq.compose101.feature.plants.data.repositoryimpl.PlantRepositoryImpl
+import com.qq.compose101.feature.plants.domain.repository.GardenRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,4 +16,9 @@ abstract class RepositoryModule {
     abstract fun bindPlantRepository(
         plantRepositoryImpl: PlantRepositoryImpl
     ): PlantRepository
+
+    @Binds
+    abstract fun bindGardenRepository(
+        gardenRepositoryImpl: GardenRepositoryImpl
+    ): GardenRepository
 }
