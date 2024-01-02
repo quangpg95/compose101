@@ -1,4 +1,4 @@
-package com.qq.compose101.feature.plants.data
+package com.qq.compose101.feature.plants.data.local
 
 import android.content.Context
 import androidx.room.Database
@@ -9,13 +9,12 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import com.qq.compose101.feature.plants.data.local.Converters
 import com.qq.compose101.feature.plants.data.local.dao.GardenPlantingDao
 import com.qq.compose101.feature.plants.data.local.dao.PlantDao
 import com.qq.compose101.feature.plants.data.local.table.GardenPlantingDB
 import com.qq.compose101.feature.plants.data.local.table.PlantDB
-import com.qq.compose101.worker.SeedDatabaseWorker
-import com.qq.compose101.worker.SeedDatabaseWorker.Companion.KEY_FILENAME
+import com.qq.compose101.feature.plants.data.worker.SeedDatabaseWorker
+import com.qq.compose101.feature.plants.data.worker.SeedDatabaseWorker.Companion.KEY_FILENAME
 
 @Database(entities = [GardenPlantingDB::class, PlantDB::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)

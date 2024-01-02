@@ -1,7 +1,7 @@
 package com.qq.compose101.feature.app.di
 
 import android.content.Context
-import com.qq.compose101.feature.plants.data.AppDatabase
+import com.qq.compose101.feature.plants.data.local.AppDatabase
 import com.qq.compose101.feature.plants.data.local.dao.GardenPlantingDao
 import com.qq.compose101.feature.plants.data.local.dao.PlantDao
 import dagger.Module

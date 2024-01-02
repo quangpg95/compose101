@@ -1,7 +1,7 @@
 package com.qq.compose101.feature.plants.domain.di
 
 import com.qq.compose101.feature.plants.domain.repository.PlantRepository
-import com.qq.compose101.feature.plants.domain.repository.PlantRepositoryImpl
+import com.qq.compose101.feature.plants.data.repositoryimpl.PlantRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

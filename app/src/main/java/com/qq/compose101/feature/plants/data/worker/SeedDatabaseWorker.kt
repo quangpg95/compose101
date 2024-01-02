@@ -1,4 +1,4 @@
-package com.qq.compose101.worker
+package com.qq.compose101.feature.plants.data.worker
 
 import android.content.Context
 import android.util.Log
@@ -7,7 +7,7 @@ import androidx.work.WorkerParameters
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
-import com.qq.compose101.feature.plants.data.AppDatabase
+import com.qq.compose101.feature.plants.data.local.AppDatabase
 import com.qq.compose101.feature.plants.data.local.table.PlantDB
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

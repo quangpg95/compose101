@@ -1,12 +1,14 @@
-package com.qq.compose101.feature.plants.domain.repository
+package com.qq.compose101.feature.plants.data.repositoryimpl
 
 import com.qq.compose101.core.failure.Failure
 import com.qq.compose101.core.functional.Either
+import com.qq.compose101.core.functional.toLeft
+import com.qq.compose101.core.functional.toRight
 import com.qq.compose101.feature.plants.data.local.dao.PlantDao
 import com.qq.compose101.feature.plants.domain.entity.Plant
+import com.qq.compose101.feature.plants.domain.repository.PlantRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import retrofit2.Call
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -14,7 +16,7 @@ import javax.inject.Singleton
 class PlantRepositoryImpl @Inject constructor(private val plantDao: PlantDao) : PlantRepository {
     override fun getPlants(): Either<Failure, Flow<List<Plant>>> {
         return try {
-            Either.Right(plantDao.getPlants().map {
+            plantDao.getPlants().map {
                 it.map {
                     Plant(
                         plantId = it.plantId,
@@ -25,9 +27,9 @@ class PlantRepositoryImpl @Inject constructor(private val plantDao: PlantDao) : 
                         imageUrl = it.imageUrl
                     )
                 }
-            })
+            }.toRight()
         } catch (exception: Throwable) {
-            Either.Left(Failure.DatabaseError)
+            Failure.DatabaseError.toLeft()
         }
     }
 
