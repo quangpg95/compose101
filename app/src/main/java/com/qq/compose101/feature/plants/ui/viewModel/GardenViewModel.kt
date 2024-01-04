@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class GardenModel @Inject constructor(getGardens: GetGardens) : BaseViewModel() {
+class GardenViewModel @Inject constructor(getGardens: GetGardens) : BaseViewModel() {
     private val _gardenPlantingState = MutableStateFlow<List<PlantAndGardenPlantings>>(emptyList())
     val gardenPlantingState: StateFlow<List<PlantAndGardenPlantings>> get() = _gardenPlantingState
 

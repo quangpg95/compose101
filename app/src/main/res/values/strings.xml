@@ -2,4 +2,13 @@
     <string name="app_name">Seed Garden</string>
     <string name="title_my_garden">My garden</string>
     <string name="title_seeds">Seeds</string>
+    <string name="title_garden_empty">Your garden is empty</string>
+    <string name="title_add_plant">Add plant</string>
+    <string name="title_planted">Planted</string>
+    <string name="watered_date_header">Last Watered</string>
+
+    <plurals name="watering_next">
+        <item quantity="one" translation_description="Text indicating when the the plant should next be watered, singular. Used in conjunction with last watered date. 'May 24, 2018 - water tomorrow.'.">water tomorrow.</item>
+        <item quantity="other" translation_description="Text indicating when the the plant should next be watered, plural. Used in conjunction with last watered date. 'May 24, 2018 - water in 8 days.'.">water in %d days.</item>
+    </plurals>
 </resources>
