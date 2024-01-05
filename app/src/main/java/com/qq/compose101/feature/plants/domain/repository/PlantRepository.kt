@@ -10,5 +10,5 @@ interface PlantRepository {
 
     fun getPlant(plantId: String): Flow<Plant>
 
-    fun getPlantsWithGrowZoneNumber(growZoneNumber: Int): Flow<List<Plant>>
+    fun getPlantsWithGrowZoneNumber(growZoneNumber: Int): Either<Failure, Flow<List<Plant>>>
 }

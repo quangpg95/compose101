@@ -10,36 +10,64 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.qq.compose101.R
 import com.qq.compose101.core.theme.title
-import com.qq.compose101.feature.plants.domain.entity.Plant
+import com.qq.compose101.feature.plants.ui.model.PlantView
+import com.qq.compose101.feature.plants.ui.screen.garden.GardenScreen
+import com.qq.compose101.feature.plants.ui.screen.seed.SeedListScreen
 import com.qq.compose101.feature.plants.ui.viewModel.PlantListViewModel
 import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    onPlantClick: (Plant) -> Unit = {},
-    viewModel: PlantListViewModel
+    onPlantClick: (PlantView) -> Unit = {},
+    viewModel: PlantListViewModel = hiltViewModel()
 ) {
+    val pagerState = rememberPagerState() {
+        2
+    }
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
+    Scaffold(
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+            HomeTopAppBar(
+                pagerState = pagerState,
+                onFilterClick = { viewModel.updateData() },
+                scrollBehavior = scrollBehavior
+            )
+        }
+    ) { contentPadding ->
+        HomePagerScreen(
+            onPlantClick = onPlantClick,
+            pagerState = pagerState,
+            Modifier.padding(top = contentPadding.calculateTopPadding())
+        )
+    }
 
 }
 
@@ -84,7 +112,7 @@ fun HomeTopAppBar(
 
 @Composable
 fun HomePagerScreen(
-    onPlantClick: (Plant) -> Unit,
+    onPlantClick: (PlantView) -> Unit,
     pagerState: PagerState,
     modifier: Modifier = Modifier,
     pages: Array<SeedGardenPage> = SeedGardenPage.entries.toTypedArray()
@@ -109,21 +137,26 @@ fun HomePagerScreen(
             }
         }
 
-//        HorizontalPager(
-//            modifier = Modifier.background(MaterialTheme.colorScheme.background),
-//            pageCount = pages.size,
-//            state = pagerState,
-//            verticalAlignment = Alignment.Top
-//        ) { index ->
-//            when (pages[index]) {
-//                SeedGardenPage.MY_GARDEN -> {
-//
-//                }
-//
-//                SeedGardenPage.SEEDS -> {
-//
-//                }
-//            }
-//        }
+        HorizontalPager(
+            modifier = Modifier.background(MaterialTheme.colorScheme.background),
+            state = pagerState,
+            verticalAlignment = Alignment.Top
+        ) { index ->
+            when (pages[index]) {
+                SeedGardenPage.MY_GARDEN -> {
+                    GardenScreen(
+                        modifier = Modifier.fillMaxWidth(),
+                        onAddPlantClick = {
+                            coroutineScope.launch {
+                                pagerState.scrollToPage(SeedGardenPage.SEEDS.ordinal)
+                            }
+                        }, onPlantClick = { onPlantClick(it.plantView) })
+                }
+
+                SeedGardenPage.SEEDS -> {
+                    SeedListScreen(onPlantClick = onPlantClick, modifier = Modifier.fillMaxWidth())
+                }
+            }
+        }
     }
 }

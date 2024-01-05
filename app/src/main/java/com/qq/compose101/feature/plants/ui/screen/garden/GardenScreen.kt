@@ -29,7 +29,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -41,8 +40,7 @@ import com.qq.compose101.core.theme.body
 import com.qq.compose101.core.theme.caption
 import com.qq.compose101.core.theme.headline
 import com.qq.compose101.core.theme.title
-import com.qq.compose101.core.utils.toDisplay
-import com.qq.compose101.feature.plants.domain.entity.PlantAndGardenPlantings
+import com.qq.compose101.feature.plants.ui.model.PlantAndGardenPlantingsView
 import com.qq.compose101.feature.plants.ui.viewModel.GardenViewModel
 
 @Composable
@@ -50,7 +48,7 @@ fun GardenScreen(
     modifier: Modifier = Modifier,
     viewModel: GardenViewModel = hiltViewModel(),
     onAddPlantClick: () -> Unit,
-    onPlantClick: (PlantAndGardenPlantings) -> Unit
+    onPlantClick: (PlantAndGardenPlantingsView) -> Unit
 ) {
     val gardenPlants by viewModel.gardenPlantingState.collectAsState(initial = emptyList())
     GardenScreen(
@@ -62,22 +60,22 @@ fun GardenScreen(
 
 @Composable
 fun GardenScreen(
-    gardenPlants: List<PlantAndGardenPlantings>,
+    gardenPlants: List<PlantAndGardenPlantingsView>,
     modifier: Modifier = Modifier,
     onAddPlantClick: () -> Unit,
-    onPlantClick: (PlantAndGardenPlantings) -> Unit
+    onPlantClick: (PlantAndGardenPlantingsView) -> Unit
 ) {
     if (gardenPlants.isEmpty()) {
         EmptyGarden(onAddPlantClick = onAddPlantClick, modifier = modifier)
     } else {
-
+        GardenList(gardenPlants = gardenPlants, onPlantClick = onPlantClick)
     }
 }
 
 @Composable
 fun GardenList(
-    gardenPlants: List<PlantAndGardenPlantings>,
-    onPlantClick: (PlantAndGardenPlantings) -> Unit,
+    gardenPlants: List<PlantAndGardenPlantingsView>,
+    onPlantClick: (PlantAndGardenPlantingsView) -> Unit,
     modifier: Modifier = Modifier
 ) {
     // Call reportFullyDrawn when the garden list has been rendered
@@ -90,7 +88,7 @@ fun GardenList(
             vertical = 16.dp
         )
     ) {
-        items(items = gardenPlants, key = { it.plant.plantId }) {
+        items(items = gardenPlants, key = { it.plantView.plantId }) {
             GardenListItem(plantings = it, onPlantClick = onPlantClick)
         }
     }
@@ -99,11 +97,11 @@ fun GardenList(
 
 @Composable
 fun GardenListItem(
-    plantings: PlantAndGardenPlantings,
-    onPlantClick: (PlantAndGardenPlantings) -> Unit
+    plantings: PlantAndGardenPlantingsView,
+    onPlantClick: (PlantAndGardenPlantingsView) -> Unit
 ) {
     plantings.apply {
-        val garden = plantings.gardenPlantings[0]
+        val gardenView = plantings.gardenPlantingViews[0]
         ElevatedCard(
             onClick = { onPlantClick(this) },
             modifier = Modifier.padding(
@@ -115,8 +113,8 @@ fun GardenListItem(
         ) {
             Column(Modifier.fillMaxWidth()) {
                 GlideImage(
-                    model = plant.imageUrl,
-                    contentDescription = plant.description,
+                    model = plantView.imageUrl,
+                    contentDescription = plantView.description,
                     Modifier
                         .fillMaxWidth()
                         .height(95.dp),
@@ -124,7 +122,7 @@ fun GardenListItem(
                 )
 
                 Text(
-                    text = plant.name,
+                    text = plantView.name,
                     Modifier
                         .padding(16.dp)
                         .align(Alignment.CenterHorizontally),
@@ -138,7 +136,7 @@ fun GardenListItem(
                 )
 
                 Text(
-                    text = garden.plantDate.toDisplay(),
+                    text = gardenView.plantDate,
                     Modifier.align(Alignment.CenterHorizontally),
                     style = MaterialTheme.typography.caption
                 )
@@ -152,15 +150,15 @@ fun GardenListItem(
                     style = MaterialTheme.typography.body
                 )
                 Text(
-                    text = garden.lastWateringDate.toDisplay(),
+                    text = gardenView.lastWateringDate,
                     Modifier.align(Alignment.CenterHorizontally),
                     style = MaterialTheme.typography.caption
                 )
                 Text(
                     text = pluralStringResource(
                         id = R.plurals.watering_next,
-                        count = plant.wateringInterval,
-                        plant.wateringInterval
+                        count = plantView.wateringInterval,
+                        plantView.wateringInterval
                     ),
                     Modifier
                         .align(Alignment.CenterHorizontally)

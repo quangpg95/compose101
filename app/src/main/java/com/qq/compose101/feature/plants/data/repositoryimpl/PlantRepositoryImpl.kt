@@ -33,11 +33,15 @@ class PlantRepositoryImpl @Inject constructor(private val plantDao: PlantDao) : 
         }
     }
 
-    override fun getPlantsWithGrowZoneNumber(growZoneNumber: Int): Flow<List<Plant>> {
-        return plantDao.getPlantsWithGrowZoneNumber(growZoneNumber).map {
-            it.map {
-                it.convert()
-            }
+    override fun getPlantsWithGrowZoneNumber(growZoneNumber: Int): Either<Failure, Flow<List<Plant>>> {
+        return try {
+            plantDao.getPlantsWithGrowZoneNumber(growZoneNumber).map {
+                it.map {
+                    it.convert()
+                }
+            }.toRight()
+        }catch (exception: Throwable) {
+            Failure.DatabaseError.toLeft()
         }
     }
 
