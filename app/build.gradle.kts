@@ -62,7 +62,6 @@ dependencies {
     implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.work.runtime.ktx)
-    implementation(libs.material)
     implementation(libs.gson)
     implementation(libs.okhttp3.logging.interceptor)
     implementation(libs.retrofit2.converter.gson)
@@ -90,6 +89,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.glide)
     implementation(libs.accompanist.systemuicontroller)
+    implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.pager.indicators)
     debugImplementation(libs.androidx.compose.ui.tooling)
 
     // Testing dependencies
