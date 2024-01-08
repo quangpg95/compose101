@@ -41,21 +41,20 @@ fun SeedListScreen(
     viewModel: PlantListViewModel = hiltViewModel()
 ) {
     val plants by viewModel.plants.collectAsState(initial = emptyList())
-    SeedListScreen(plantViews = plants, onPlantClick = onPlantClick)
+    SeedListScreen(plantViews = plants, onPlantClick = onPlantClick, modifier = modifier)
 }
 
 @Composable
 fun SeedListScreen(
-    plantViews: List<PlantView>,
-    modifier: Modifier = Modifier,
-    onPlantClick: (PlantView) -> Unit
+    plantViews: List<PlantView>, modifier: Modifier = Modifier, onPlantClick: (PlantView) -> Unit
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 16.dp),
+        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 12.dp),
         modifier = modifier
             .testTag("plant_list")
-            .imePadding()
+            .imePadding(),
+        userScrollEnabled = true
     ) {
         items(items = plantViews, key = { it.plantId }) {
             SeedListItem(plantView = it) {
@@ -75,9 +74,8 @@ fun SeedListItem(plantView: PlantView, onClick: () -> Unit) {
 @Composable
 fun ImageListItem(name: String, imageUrl: String, onClick: () -> Unit) {
     Card(
-        onClick = onClick,
-        modifier = Modifier
-            .padding(horizontal = 12.dp)
+        onClick = onClick, modifier = Modifier
+            .padding(horizontal = 8.dp)
             .padding(bottom = 16.dp)
     ) {
         Column(Modifier.fillMaxWidth()) {
@@ -96,7 +94,7 @@ fun ImageListItem(name: String, imageUrl: String, onClick: () -> Unit) {
                 style = MaterialTheme.typography.title,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 16.dp)
+                    .padding(vertical = 8.dp)
                     .wrapContentWidth(Alignment.CenterHorizontally)
             )
         }

@@ -64,7 +64,7 @@ fun HomeScreen(
         HomePagerScreen(
             onPlantClick = onPlantClick,
             pagerState = pagerState,
-            Modifier.padding(top = contentPadding.calculateTopPadding())
+            Modifier.padding(top = contentPadding.calculateTopPadding()),
         )
     }
 
@@ -101,7 +101,7 @@ fun HomeTopAppBar(
                 )
             }
         }
-    }
+    }, scrollBehavior = scrollBehavior
 
     )
 }
@@ -121,7 +121,8 @@ fun HomePagerScreen(
         ) {
             pages.forEachIndexed { index, page ->
                 val title = stringResource(id = page.titleResId)
-                Tab(selected = pagerState.currentPage == index,
+                Tab(
+                    selected = pagerState.currentPage == index,
                     onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } },
                     text = { Text(text = title) },
                     icon = {

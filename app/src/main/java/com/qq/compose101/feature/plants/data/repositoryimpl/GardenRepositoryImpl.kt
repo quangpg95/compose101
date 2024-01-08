@@ -17,12 +17,20 @@ import javax.inject.Singleton
 @Singleton
 class GardenRepositoryImpl @Inject constructor(private val gardenPlantingDao: GardenPlantingDao) :
     GardenRepository {
-    override suspend fun createPlanting(plantId: String) {
-        gardenPlantingDao.insertGardenPlanting(GardenPlantingDB(plantId))
+    override suspend fun createPlanting(plantId: String): Either<Failure, Long> {
+        return try {
+            gardenPlantingDao.insertGardenPlanting(GardenPlantingDB(plantId)).toRight()
+        } catch (ex: Throwable) {
+            Failure.DatabaseError.toLeft()
+        }
     }
 
-    override fun isPlanted(plantId: String): Flow<Boolean> {
-        return gardenPlantingDao.isPlanted(plantId)
+    override fun isPlanted(plantId: String): Either<Failure, Flow<Boolean>> {
+        return try {
+            gardenPlantingDao.isPlanted(plantId).toRight()
+        } catch (ex: Throwable) {
+            Failure.DatabaseError.toLeft()
+        }
     }
 
     override fun getPlantedGardens(): Either<Failure, Flow<List<PlantAndGardenPlantings>>> {
