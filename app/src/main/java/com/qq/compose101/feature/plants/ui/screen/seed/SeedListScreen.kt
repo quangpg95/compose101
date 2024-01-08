@@ -32,6 +32,7 @@ import com.qq.compose101.core.theme.title
 import com.qq.compose101.feature.plants.domain.entity.Plant
 import com.qq.compose101.feature.plants.ui.model.PlantView
 import com.qq.compose101.feature.plants.ui.viewModel.PlantListViewModel
+import com.qq.compose101.feature.plants.ui.widget.RemoteImage
 
 @Composable
 fun SeedListScreen(
@@ -80,7 +81,7 @@ fun ImageListItem(name: String, imageUrl: String, onClick: () -> Unit) {
             .padding(bottom = 16.dp)
     ) {
         Column(Modifier.fillMaxWidth()) {
-            GlideImage(
+            RemoteImage(
                 model = imageUrl,
                 contentDescription = "plant",
                 Modifier

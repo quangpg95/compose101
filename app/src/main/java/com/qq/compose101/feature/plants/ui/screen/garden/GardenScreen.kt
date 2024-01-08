@@ -44,6 +44,7 @@ import com.qq.compose101.core.theme.headline
 import com.qq.compose101.core.theme.title
 import com.qq.compose101.feature.plants.ui.model.PlantAndGardenPlantingsView
 import com.qq.compose101.feature.plants.ui.viewModel.GardenViewModel
+import com.qq.compose101.feature.plants.ui.widget.RemoteImage
 
 @Composable
 fun GardenScreen(
@@ -110,7 +111,7 @@ fun GardenListItem(
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
         ) {
             Column(Modifier.fillMaxWidth()) {
-                GlideImage(
+                RemoteImage(
                     model = plantView.imageUrl,
                     contentDescription = plantView.description,
                     Modifier

@@ -130,7 +130,9 @@ fun HomePagerScreen(
                             contentDescription = null,
                             modifier = Modifier.size(24.dp)
                         )
-                    })
+                    },
+                    unselectedContentColor = MaterialTheme.colorScheme.secondary
+                )
             }
         }
 
