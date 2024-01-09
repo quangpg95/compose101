@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalGlideComposeApi::class)
 
-package com.qq.compose101.feature.plants.ui.widget
+package com.qq.compose101.feature.app.ui.widget
 
 import android.graphics.drawable.Drawable
 import androidx.compose.animation.core.LinearEasing

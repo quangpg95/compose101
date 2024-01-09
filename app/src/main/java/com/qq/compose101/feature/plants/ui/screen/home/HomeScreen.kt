@@ -38,6 +38,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import com.qq.compose101.R
+import com.qq.compose101.core.theme.headline
 import com.qq.compose101.core.theme.title
 import com.qq.compose101.feature.plants.ui.model.PlantView
 import com.qq.compose101.feature.plants.ui.screen.garden.GardenScreen
@@ -89,7 +90,7 @@ fun HomeTopAppBar(
         ) {
             Text(
                 text = stringResource(id = R.string.app_name),
-                style = MaterialTheme.typography.title
+                style = MaterialTheme.typography.headline
             )
         }
     }, modifier = modifier, actions = {

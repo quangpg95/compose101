@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface PlantRepository {
     fun getPlants(): Either<Failure, Flow<List<Plant>>>
 
-    fun getPlant(plantId: String): Flow<Plant>
+    fun getPlant(plantId: String): Either<Failure, Flow<Plant>>
 
     fun getPlantsWithGrowZoneNumber(growZoneNumber: Int): Either<Failure, Flow<List<Plant>>>
 }

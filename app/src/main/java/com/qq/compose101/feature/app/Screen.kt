@@ -8,6 +8,9 @@ sealed class Screen(
     val route: String,
     val navArguments: List<NamedNavArgument> = emptyList()
 ) {
+    companion object{
+        const val KEY_PLANT_ID = "PLANT_ID"
+    }
     data object Home : Screen("home")
 
     data object Gallery : Screen(
@@ -21,7 +24,7 @@ sealed class Screen(
 
     data object PlantDetail : Screen(
         route = "plantDetail/{plantId}",
-        navArguments = listOf(navArgument("plantId") {
+        navArguments = listOf(navArgument(KEY_PLANT_ID) {
             type = NavType.StringType
         })
     ) {

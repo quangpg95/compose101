@@ -44,7 +44,7 @@ import com.qq.compose101.core.theme.headline
 import com.qq.compose101.core.theme.title
 import com.qq.compose101.feature.plants.ui.model.PlantAndGardenPlantingsView
 import com.qq.compose101.feature.plants.ui.viewModel.GardenViewModel
-import com.qq.compose101.feature.plants.ui.widget.RemoteImage
+import com.qq.compose101.feature.app.ui.widget.RemoteImage
 
 @Composable
 fun GardenScreen(

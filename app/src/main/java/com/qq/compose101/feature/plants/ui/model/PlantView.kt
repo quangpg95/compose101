@@ -6,10 +6,10 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class PlantView(
-    val plantId: String,
-    val name: String,
-    val description: String,
-    val growZoneNumber: Int,
+    val plantId: String = "",
+    val name: String = "",
+    val description: String ="",
+    val growZoneNumber: Int = -1,
     val wateringInterval: Int = 7,
     val imageUrl: String = ""
 ) : Parcelable

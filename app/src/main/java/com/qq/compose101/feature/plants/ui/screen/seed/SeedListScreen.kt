@@ -32,7 +32,7 @@ import com.qq.compose101.core.theme.title
 import com.qq.compose101.feature.plants.domain.entity.Plant
 import com.qq.compose101.feature.plants.ui.model.PlantView
 import com.qq.compose101.feature.plants.ui.viewModel.PlantListViewModel
-import com.qq.compose101.feature.plants.ui.widget.RemoteImage
+import com.qq.compose101.feature.app.ui.widget.RemoteImage
 
 @Composable
 fun SeedListScreen(

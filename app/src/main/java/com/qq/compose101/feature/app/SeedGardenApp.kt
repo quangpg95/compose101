@@ -27,5 +27,9 @@ fun SeedGardenNavHost(navHostController: NavHostController) {
                 )
             })
         }
+
+        composable(route = Screen.PlantDetail.route, arguments = Screen.PlantDetail.navArguments) {
+
+        }
     }
 }
