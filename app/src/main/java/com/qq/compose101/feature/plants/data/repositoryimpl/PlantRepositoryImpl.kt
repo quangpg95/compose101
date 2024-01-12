@@ -27,10 +27,10 @@ class PlantRepositoryImpl @Inject constructor(private val plantDao: PlantDao) : 
         }
     }
 
-    override fun getPlant(plantId: String): Flow<Plant> {
+    override fun getPlant(plantId: String): Either<Failure, Flow<Plant>> {
         return plantDao.getPlant(plantId).map {
             it.convert()
-        }
+        }.toRight()
     }
 
     override fun getPlantsWithGrowZoneNumber(growZoneNumber: Int): Either<Failure, Flow<List<Plant>>> {

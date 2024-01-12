@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.qq.compose101.feature.app.Screen
 import com.qq.compose101.feature.plants.ui.screen.home.HomeScreen
+import com.qq.compose101.feature.plants.ui.screen.seed.SeedDetailScreen
 
 @Composable
 fun SeedGardenApp() {
@@ -29,7 +30,11 @@ fun SeedGardenNavHost(navHostController: NavHostController) {
         }
 
         composable(route = Screen.PlantDetail.route, arguments = Screen.PlantDetail.navArguments) {
-
+            SeedDetailScreen(
+                onBackClick = { navHostController.navigateUp() },
+                onShareClick = {},
+                onGalleryClick = {}
+            )
         }
     }
 }
