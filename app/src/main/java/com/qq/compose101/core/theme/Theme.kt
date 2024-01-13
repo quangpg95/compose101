@@ -10,6 +10,7 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -84,8 +85,6 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 
-
-
 @Composable
 fun Compose101Theme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -103,26 +102,33 @@ fun Compose101Theme(
         darkTheme -> {
             DarkColorScheme
         }
+
         else -> {
             LightColorScheme
         }
     }
 
-    val systemUiController = rememberSystemUiController()
-    systemUiController.setStatusBarColor(colorScheme.background)
-
-    val customColorsPalette = when{
+    val customColorsPalette = when {
         darkTheme -> DarkCustomColorsPalette
         else -> LightCustomColorsPalette
     }
-//    val view = LocalView.current
-//    if (!view.isInEditMode) {
-//        SideEffect {
-//            val window = (view.context as Activity).window
-//            window.statusBarColor = colorScheme.primary.toArgb()
-//            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
-//        }
-//    }
+
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        val systemUiController = rememberSystemUiController()
+        val useDarkIcons = !isSystemInDarkTheme()
+        val window = (view.context as Activity).window
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        DisposableEffect(systemUiController, useDarkIcons) {
+            // Update all of the system bar colors to be transparent, and use
+            // dark icons if we're in light theme
+            systemUiController.setSystemBarsColor(
+                color = Color.Transparent,
+                darkIcons = useDarkIcons
+            )
+            onDispose {}
+        }
+    }
 
     CompositionLocalProvider(LocalCustomColorsPalette provides customColorsPalette) {
         MaterialTheme(

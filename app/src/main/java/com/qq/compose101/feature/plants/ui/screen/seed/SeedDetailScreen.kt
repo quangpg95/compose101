@@ -33,6 +33,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -426,7 +427,7 @@ fun SeedFab(
 ) {
     FloatingActionButton(onClick = onFabClick,
         shape = MaterialTheme.shapes.small, modifier = modifier.semantics { "add plant" }) {
-        Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "add plant")
+        Icon(imageVector = Icons.Filled.Add, contentDescription = "add plant")
     }
 }
 
