@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -69,6 +70,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidViewBinding
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.core.text.HtmlCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -79,6 +81,7 @@ import com.qq.compose101.core.theme.Dimens
 import com.qq.compose101.core.theme.headline
 import com.qq.compose101.core.theme.title
 import com.qq.compose101.core.theme.visible
+import com.qq.compose101.core.utils.toAnnotatedString
 import com.qq.compose101.feature.app.ui.widget.RemoteImage
 import com.qq.compose101.feature.app.ui.widget.TextSnackbarContainer
 import com.qq.compose101.feature.plants.ui.model.PlantView
@@ -96,8 +99,7 @@ fun SeedDetailScreen(
     val isPlanted by seedDetailViewModel.isPlanted.collectAsState()
     val showSnackbar by seedDetailViewModel.showSnackbar.observeAsState()
 
-    SeedDetailScreen(
-        modifier = modifier,
+    SeedDetailScreen(modifier = modifier,
         plantView = plantView,
         isPlanted = isPlanted,
         onBackClick = onBackClick,
@@ -123,14 +125,11 @@ fun SeedDetailScreen(
     onAddPlant: () -> Unit
 ) {
     Surface {
-        TextSnackbarContainer(
-            snackbarText = stringResource(id = R.string.title_add_plan_to_garden),
+        TextSnackbarContainer(snackbarText = stringResource(id = R.string.title_add_plan_to_garden),
             showSnackbar = showSnackBar ?: false,
             onDismissSnackbar = { onDismissSnackbar() }) {
             SeedDetails(
-                plantView,
-                isPlanted,
-                PlantDetailsCallbacks(
+                plantView, isPlanted, PlantDetailsCallbacks(
                     onBackClick = onBackClick,
                     onFabClick = {
                         onAddPlant()
@@ -163,8 +162,7 @@ fun SeedDetails(
     var plantScroller by remember {
         mutableStateOf(PlantDetailsScroller(scrollState, Float.MIN_VALUE))
     }
-    val transitionState =
-        remember(plantScroller) { plantScroller.toolbarTransitionState }
+    val transitionState = remember(plantScroller) { plantScroller.toolbarTransitionState }
     val toolbarState = plantScroller.getToolbarState(LocalDensity.current)
 
     // Transition that fades in/out the header with the image and the Toolbar
@@ -187,13 +185,11 @@ fun SeedDetails(
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             override fun onPreScroll(
-                available: Offset,
-                source: NestedScrollSource
+                available: Offset, source: NestedScrollSource
             ): Offset {
                 val delta = available.y
                 val newOffset = toolbarOffsetHeightPx.value + delta
-                toolbarOffsetHeightPx.value =
-                    newOffset.coerceIn(-toolbarHeightPx, 0f)
+                toolbarOffsetHeightPx.value = newOffset.coerceIn(-toolbarHeightPx, 0f)
                 return Offset.Zero
             }
         }
@@ -205,36 +201,32 @@ fun SeedDetails(
             // attach as a parent to the nested scroll system
             .nestedScroll(nestedScrollConnection)
     ) {
-        SeedDetailContent(
-            scrollState = scrollState,
+        SeedDetailContent(scrollState = scrollState,
             toolbarState = toolbarState,
             onNamePosition = { newNamePosition ->
                 // Comparing to Float.MIN_VALUE as we are just interested on the original
                 // position of name on the screen
                 if (plantScroller.namePosition == Float.MIN_VALUE) {
-                    plantScroller =
-                        plantScroller.copy(namePosition = newNamePosition)
+                    plantScroller = plantScroller.copy(namePosition = newNamePosition)
                 }
             },
             plant = plantView,
             isPlanted = isPlanted,
             hasValidUnsplashKey = false,
             imageHeight = with(LocalDensity.current) {
-                val candidateHeight =
-                    Dimens.PlantDetailAppBarHeight
+                val candidateHeight = Dimens.PlantDetailAppBarHeight
                 // FIXME: Remove this workaround when https://github.com/bumptech/glide/issues/4952
                 // is released
                 maxOf(candidateHeight, 1.dp)
             },
             onFabClick = callbacks.onFabClick,
             onGalleryClick = { callbacks.onGalleryClick(plantView) },
-            contentAlpha = { contentAlpha.value }
-        )
-        SeedToolbar(
-            toolbarState, plantView.name, callbacks,
+            contentAlpha = { contentAlpha.value })
+        SeedToolbar(toolbarState,
+            plantView.name,
+            callbacks,
             toolbarAlpha = { toolbarAlpha.value },
-            contentAlpha = { contentAlpha.value }
-        )
+            contentAlpha = { contentAlpha.value })
     }
 }
 
@@ -255,32 +247,25 @@ fun SeedDetailContent(
         ConstraintLayout {
             val (image, fab, info) = createRefs()
 
-            SeedImage(
-                imageUrl = plant.imageUrl,
+            SeedImage(imageUrl = plant.imageUrl,
                 imageHeight = imageHeight,
                 modifier = Modifier
                     .constrainAs(image) { top.linkTo(parent.top) }
-                    .alpha(contentAlpha())
-            )
+                    .alpha(contentAlpha()))
 
             if (!isPlanted) {
                 val fabEndMargin = Dimens.PaddingSmall
-                SeedFab(
-                    onFabClick = onFabClick,
-                    modifier = Modifier
-                        .constrainAs(fab) {
-                            centerAround(image.bottom)
-                            absoluteRight.linkTo(
-                                parent.absoluteRight,
-                                margin = fabEndMargin
-                            )
-                        }
-                        .alpha(contentAlpha())
-                )
+                SeedFab(onFabClick = onFabClick, modifier = Modifier
+                    .constrainAs(fab) {
+                        centerAround(image.bottom)
+                        absoluteRight.linkTo(
+                            parent.absoluteRight, margin = fabEndMargin
+                        )
+                    }
+                    .alpha(contentAlpha()))
             }
 
-            SeedInformation(
-                name = plant.name,
+            SeedInformation(name = plant.name,
                 wateringInterval = plant.wateringInterval,
                 description = plant.description,
                 hasValidUnsplashKey = hasValidUnsplashKey,
@@ -289,8 +274,7 @@ fun SeedDetailContent(
                 onGalleryClick = onGalleryClick,
                 modifier = Modifier.constrainAs(info) {
                     top.linkTo(image.bottom)
-                }
-            )
+                })
         }
     }
 
@@ -308,8 +292,7 @@ fun SeedInformation(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.padding(Dimens.PaddingLarge)) {
-        Text(
-            text = name,
+        Text(text = name,
             style = MaterialTheme.typography.displaySmall,
             modifier = Modifier
                 .padding(
@@ -319,8 +302,7 @@ fun SeedInformation(
                 )
                 .align(Alignment.CenterHorizontally)
                 .onGloballyPositioned { onNamePosition(it.positionInWindow().y) }
-                .visible { toolbarState == ToolbarState.HIDDEN }
-        )
+                .visible { toolbarState == ToolbarState.HIDDEN })
         Box(
             Modifier
                 .align(Alignment.CenterHorizontally)
@@ -345,18 +327,15 @@ fun SeedInformation(
 
                 Text(
                     text = wateringIntervalText,
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             }
             if (hasValidUnsplashKey) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_photo_library),
+                Image(painter = painterResource(id = R.drawable.ic_photo_library),
                     contentDescription = "Gallery Icon",
                     Modifier
                         .clickable { onGalleryClick() }
-                        .align(Alignment.CenterEnd)
-                )
+                        .align(Alignment.CenterEnd))
             }
         }
         PlantDescription(description)
@@ -366,7 +345,8 @@ fun SeedInformation(
 
 @Composable
 private fun PlantDescription(description: String) {
-    Text(text = description, style = MaterialTheme.typography.title)
+    val htmlText = HtmlCompat.fromHtml(description, HtmlCompat.FROM_HTML_MODE_COMPACT)
+    Text(text = htmlText.toAnnotatedString(), style = MaterialTheme.typography.title)
 }
 
 @Composable
@@ -390,8 +370,9 @@ fun SeedImage(
             )
         }
         RemoteImage(
-            model = imageUrl, contentDescription = "seed image", modifier = Modifier
-                .fillMaxSize(),
+            model = imageUrl,
+            contentDescription = "seed image",
+            modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         ) {
             it.addListener(object : RequestListener<Drawable> {
@@ -422,11 +403,11 @@ fun SeedImage(
 
 @Composable
 fun SeedFab(
-    onFabClick: () -> Unit,
-    modifier: Modifier = Modifier
+    onFabClick: () -> Unit, modifier: Modifier = Modifier
 ) {
     FloatingActionButton(onClick = onFabClick,
-        shape = MaterialTheme.shapes.small, modifier = modifier.semantics { "add plant" }) {
+        shape = MaterialTheme.shapes.small,
+        modifier = modifier.semantics { "add plant" }) {
         Icon(imageVector = Icons.Filled.Add, contentDescription = "add plant")
     }
 }
@@ -448,17 +429,14 @@ fun SeedToolbar(
             modifier = Modifier.alpha(toolbarAlpha())
         )
     } else {
-        PlanHeaderActions(
-            onBackClick = callbacks.onBackClick,
+        PlanHeaderActions(onBackClick = callbacks.onBackClick,
             onShareClick = { callbacks.onShareClick(plantName) })
     }
 }
 
 @Composable
 fun PlanHeaderActions(
-    onBackClick: () -> Unit,
-    onShareClick: () -> Unit,
-    modifier: Modifier = Modifier
+    onBackClick: () -> Unit, onShareClick: () -> Unit, modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
@@ -469,12 +447,10 @@ fun PlanHeaderActions(
     ) {
         val iconModifier = Modifier
             .sizeIn(
-                maxWidth = Dimens.ToolbarIconSize,
-                maxHeight = Dimens.ToolbarIconSize
+                maxWidth = Dimens.ToolbarIconSize, maxHeight = Dimens.ToolbarIconSize
             )
             .background(
-                color = MaterialTheme.colorScheme.surface,
-                shape = CircleShape
+                color = MaterialTheme.colorScheme.surface, shape = CircleShape
             )
 
         IconButton(
@@ -484,22 +460,18 @@ fun PlanHeaderActions(
                 .then(iconModifier)
         ) {
             Icon(
-                Icons.Filled.ArrowBack,
-                contentDescription = "Back"
+                Icons.Filled.ArrowBack, contentDescription = "Back"
             )
         }
-        IconButton(
-            onClick = onShareClick,
+        IconButton(onClick = onShareClick,
             modifier = Modifier
                 .padding(end = Dimens.ToolbarIconPadding)
                 .then(iconModifier)
                 .semantics {
                     contentDescription = "share"
-                }
-        ) {
+                }) {
             Icon(
-                Icons.Filled.Share,
-                contentDescription = "share"
+                Icons.Filled.Share, contentDescription = "share"
             )
         }
     }
@@ -514,14 +486,14 @@ val ToolbarState.isShown
 private val HeaderTransitionOffset = 190.dp
 
 data class PlantDetailsScroller(
-    val scrollState: ScrollState,
-    val namePosition: Float
+    val scrollState: ScrollState, val namePosition: Float
 ) {
     val toolbarTransitionState = MutableTransitionState(ToolbarState.HIDDEN)
 
     fun getToolbarState(density: Density): ToolbarState {
-        return if (namePosition > 1f &&
-            scrollState.value > (namePosition - getTransitionOffset(density))
+        return if (namePosition > 1f && scrollState.value > (namePosition - getTransitionOffset(
+                density
+            ))
         ) {
             toolbarTransitionState.targetState = ToolbarState.SHOWN
             ToolbarState.SHOWN
@@ -544,41 +516,35 @@ fun SeedDetailToolbar(
     modifier: Modifier = Modifier
 ) {
     Surface {
-        TopAppBar(
-            modifier = modifier
-                .statusBarsPadding()
-                .background(color = MaterialTheme.colorScheme.surface),
-            title = {
-                Row {
-                    IconButton(
-                        onClick = onBackClick,
-                        Modifier.align(Alignment.CenterVertically)
-                    ) {
-                        Icon(Icons.Filled.ArrowBack, contentDescription = "Navigate up")
-                    }
-                    Text(
-                        text = plantName,
-                        style = MaterialTheme.typography.headline,
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxSize()
-                            .wrapContentSize(Alignment.Center)
-                    )
-
-                    IconButton(
-                        onClick = onShareClick,
-                        Modifier
-                            .align(Alignment.CenterVertically)
-                            .semantics { "Share" }) {
-                        Icon(
-                            imageVector = Icons.Filled.Share,
-                            contentDescription = "share"
-                        )
-                    }
-
+        TopAppBar(modifier = modifier
+            .statusBarsPadding()
+            .background(color = MaterialTheme.colorScheme.surface), title = {
+            Row {
+                IconButton(
+                    onClick = onBackClick, Modifier.align(Alignment.CenterVertically)
+                ) {
+                    Icon(Icons.Filled.ArrowBack, contentDescription = "Navigate up")
                 }
+                Text(
+                    text = plantName,
+                    style = MaterialTheme.typography.headline,
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxSize()
+                        .wrapContentSize(Alignment.Center)
+                )
+
+                IconButton(onClick = onShareClick,
+                    Modifier
+                        .align(Alignment.CenterVertically)
+                        .semantics { "Share" }) {
+                    Icon(
+                        imageVector = Icons.Filled.Share, contentDescription = "share"
+                    )
+                }
+
             }
-        )
+        })
     }
 
 }
