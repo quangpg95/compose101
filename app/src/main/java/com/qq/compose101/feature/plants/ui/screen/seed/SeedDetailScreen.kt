@@ -346,7 +346,11 @@ fun SeedInformation(
 @Composable
 private fun PlantDescription(description: String) {
     val htmlText = HtmlCompat.fromHtml(description, HtmlCompat.FROM_HTML_MODE_COMPACT)
-    Text(text = htmlText.toAnnotatedString(), style = MaterialTheme.typography.title)
+    Text(
+        text = htmlText.toAnnotatedString(),
+        style = MaterialTheme.typography.title,
+        modifier = Modifier.padding(bottom = Dimens.PaddingLarge)
+    )
 }
 
 @Composable
@@ -419,7 +423,7 @@ fun SeedToolbar(
     plantName: String,
     callbacks: PlantDetailsCallbacks,
     toolbarAlpha: () -> Float,
-    contentAlpha: () -> Unit
+    contentAlpha: () -> Float
 ) {
     if (toolbarState.isShown) {
         SeedDetailToolbar(
@@ -429,8 +433,11 @@ fun SeedToolbar(
             modifier = Modifier.alpha(toolbarAlpha())
         )
     } else {
-        PlanHeaderActions(onBackClick = callbacks.onBackClick,
-            onShareClick = { callbacks.onShareClick(plantName) })
+        PlanHeaderActions(
+            onBackClick = callbacks.onBackClick,
+            onShareClick = { callbacks.onShareClick(plantName) },
+            modifier = Modifier.alpha(contentAlpha())
+        )
     }
 }
 
